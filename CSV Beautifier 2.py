@@ -18,14 +18,11 @@ def FindMaxLength(Matris, lineLimit):
         Max = 0
         index = 0
         for i in range(len(List)):
-            # print(List[i])
             if (len(List[i]) > Max):
                 Max = len(List[i])
                 index = i
             if (len(List[i]) > lineLimit):
-                # print(Max , index)
                 addNumberFromI(i+1 , len(List[i]) // lineLimit , divideLineIndexes)
-        # print(Max , index)
         MaxList.append(Max)
     return MaxList
 
@@ -66,7 +63,6 @@ def processTheContents():
 def printTheTable(matrisBasedList, MaxLengthList, dividerLine):
     index = 0
     for i in range(len(matrisBasedList[0])):
-        # print(index)
         if (index < len(divideLineIndexes) and i == divideLineIndexes[index]):
             print(dividerLine)
             index += 1
@@ -84,34 +80,27 @@ def makeNewLine(stringToAdd, i, j):
     matrisBasedList[i][j+1] = stringToAdd
 
 
-def addLinesIfNecessary(lineLimit):
-    len1 = len(matrisBasedList[0])
-    len2 = len(matrisBasedList)
-    # i = 0;j = 0
-    for i in range(len1):
-        for j in range(len2):
+def addLinesIfNecessary(matrisBasedList , lineLimit):
+    i = 0
+    while (i < len(matrisBasedList[0])):
+        j = 0
+        while(j < len(matrisBasedList)):
             while (len(matrisBasedList[j][i]) > lineLimit):
-                # print("hi")
                 Tmp = matrisBasedList[j][i][lineLimit:]
                 matrisBasedList[j][i] = matrisBasedList[j][i][:lineLimit]
                 makeNewLine(Tmp, j, i)
                 MaxLengthList[j] = lineLimit
-                len1 += 1
-            # print(j , i)
-            # print(matrisBasedList[j][i])
-            # j += 1
-        # i += 1
+            j += 1
+        i += 1
 
 
 #Main Program----------------------------------------------------------------------------------------------------------------------
-contentList = contents('test 2.csv')
-allLineLimit = int(50)
+contentList = contents(input("Please Enter The Directory of Your CSV File : "))
+allLineLimit = int(input("Please Enter Your Maximum Length of Each Table Content : "))
 matrisBasedList = [[] for _ in range(6)]
 processTheContents()
 divideLineIndexes = [i for i in range(len(matrisBasedList[0]))]
-print(divideLineIndexes)
 MaxLengthList = FindMaxLength(matrisBasedList, allLineLimit)
-print(divideLineIndexes)
-addLinesIfNecessary(allLineLimit)
+addLinesIfNecessary(matrisBasedList,allLineLimit)
 dividerLine = MakeLine(MaxLengthList)
 printTheTable(matrisBasedList, MaxLengthList, dividerLine)
